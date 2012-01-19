@@ -385,6 +385,78 @@ Benchmark.bm(30) do |x|
       1 <= 2
     end
   }
+  x.report('Marshal.dump(:foo)') {
+    obj = :foo
+    n.times do
+      Marshal.dump(obj)
+    end
+  }
+  x.report('Marshal.load => :foo') {
+    s = Marshal.dump(:foo)
+    n.times do
+      Marshal.load(s)
+    end
+  }
+  x.report('Marshal.dump("a")') {
+    obj = "a"
+    n.times do
+      Marshal.dump(obj)
+    end
+  }
+  x.report('Marshal.load => "a"') {
+    s = Marshal.dump("a")
+    n.times do
+      Marshal.load(s)
+    end
+  }
+  x.report('Marshal.dump(1)') {
+    obj = 1
+    n.times do
+      Marshal.dump(obj)
+    end
+  }
+  x.report('Marshal.load => 1') {
+    s = Marshal.dump(1)
+    n.times do
+      Marshal.load(s)
+    end
+  }
+  x.report('Marshal.dump(Object)') {
+    obj = Object.new
+    n.times do
+      Marshal.dump(obj)
+    end
+  }
+  x.report('Marshal.load => Object') {
+    s = Marshal.dump(Object.new)
+    n.times do
+      Marshal.load(s)
+    end
+  }
+  x.report('Marshal.dump([])') {
+    obj = []
+    n.times do
+      Marshal.dump(obj)
+    end
+  }
+  x.report('Marshal.load => []') {
+    s = Marshal.dump([])
+    n.times do
+      Marshal.load(s)
+    end
+  }
+  x.report('Marshal.dump({})') {
+    obj = {}
+    n.times do
+      Marshal.dump(obj)
+    end
+  }
+  x.report('Marshal.load => {}') {
+    s = Marshal.dump({})
+    n.times do
+      Marshal.load(s)
+    end
+  }
   x.report('Process.fork&wait (1/1000)') {
     (n / 1000).times do
       Process.fork{
