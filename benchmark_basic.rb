@@ -201,6 +201,30 @@ Benchmark.bm(30) do |x|
       }
     end
   }
+  x.report('proc{}.call') {
+    code = proc{}
+    n.times do
+      code.call
+    end
+  }
+  x.report('proc{}.call(1)') {
+    code = proc{|a|}
+    n.times do
+      code.call(1)
+    end
+  }
+  x.report('proc{}.call(1,2)') {
+    code = proc{|a,b|}
+    n.times do
+      code.call(1,2)
+    end
+  }
+  x.report('proc{}.call(1,2,3)') {
+    code = proc{|a,b,c|}
+    n.times do
+      code.call(1,2,3)
+    end
+  }
   x.report('ary[0]') {
     ary = [ nil ]
     n.times do
