@@ -423,6 +423,36 @@ Benchmark.bm(30) do |x|
       a != b
     end
   }
+  x.report('"foo" =~ /foo/') {
+    n.times do
+      "foo" =~ /foo/
+    end
+  }
+  x.report('"foo" =~ /bar/') {
+    n.times do
+      "foo" =~ /bar/
+    end
+  }
+  x.report('"foo" =~ /foo|bar/') {
+    n.times do
+      "foo" =~ /bar/
+    end
+  }
+  x.report('"1 23 456" =~ /(\d+)/') {
+    n.times do
+      "1 23 456" =~ /(\d+)/
+    end
+  }
+  x.report('"1 23 456" =~ /(\d+) (\d+)/') {
+    n.times do
+      "1 23 456" =~ /(\d+) (\d+)/
+    end
+  }
+  x.report('"1 23 456" =~ /(\d+) (\d+) (\d+)/') {
+    n.times do
+      "1 23 456" =~ /(\d+) (\d+) (\d+)/
+    end
+  }
   x.report('Marshal.dump(:foo)') {
     obj = :foo
     n.times do
