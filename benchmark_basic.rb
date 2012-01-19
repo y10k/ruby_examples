@@ -409,6 +409,20 @@ Benchmark.bm(30) do |x|
       1 <= 2
     end
   }
+  x.report('Object == Object') {
+    a = Object.new
+    b = Object.new
+    n.times do
+      a == b
+    end
+  }
+  x.report('Object != Object') {
+    a = Object.new
+    b = Object.new
+    n.times do
+      a != b
+    end
+  }
   x.report('Marshal.dump(:foo)') {
     obj = :foo
     n.times do
