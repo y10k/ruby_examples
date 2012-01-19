@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 require 'benchmark'
+require 'monitor'
 require 'thread'
 
 n = ARGV.shift || '1_000_000'
@@ -618,6 +619,13 @@ Benchmark.bm(30) do |x|
     end
 
     th_product.kill
+  }
+  x.report('Monitor#synchronize') {
+    mon = Monitor.new
+    n.times do
+      mon.synchronize{
+      }
+    end
   }
 end
 
