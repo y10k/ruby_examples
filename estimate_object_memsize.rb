@@ -8,8 +8,7 @@ def get_process_rsz(pid)
   }
 end
 
-def get_object_memsize
-  num_obj = 1_000_000
+def get_object_memsize(num_obj)
   ps_interval = 1
   ptr_siz = (RUBY_PLATFORM =~ /x86_64/) ? 8 : 4
 
@@ -85,6 +84,9 @@ Struct_member3 = Struct.new(:v1, :v2, :v3)
 Struct_member4 = Struct.new(:v1, :v2, :v3, :v4)
 Struct_member5 = Struct.new(:v1, :v2, :v3, :v4, :v5)
 
+num_obj = ARGV.shift || '1_000_000'
+num_obj = num_obj.to_i
+
 [ 
   '"" << ""',
   '"" << "1"',
@@ -127,7 +129,7 @@ Struct_member5 = Struct.new(:v1, :v2, :v3, :v4, :v5)
   unless (factory) then
     factory = eval("proc{ #{expr} }")
   end
-  printf "%- 30s %g\n", expr, get_object_memsize{ factory.call }
+  printf "%- 30s %g\n", expr, get_object_memsize(num_obj) { factory.call }
 end
 
 # Local Variables:
