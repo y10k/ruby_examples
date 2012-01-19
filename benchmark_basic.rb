@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 require 'benchmark'
+require 'thread'
 
 n = ARGV.shift || '1_000_000'
 n = n.to_i
@@ -32,7 +33,7 @@ def method_block
   yield
 end
 
-Benchmark.bm(20) do |x|
+Benchmark.bm(30) do |x|
   x.report('empty') {
     n.times do
     end
@@ -383,6 +384,100 @@ Benchmark.bm(20) do |x|
     n.times do
       1 <= 2
     end
+  }
+  x.report('Process.fork&wait (1/1000)') {
+    (n / 1000).times do
+      Process.fork{
+        exit!
+      }
+      Process.wait
+    end
+  }
+  x.report('Thread.new&join (1/100)') {
+    (n / 100).times do
+      Thread.new{
+      }.join
+    end
+  }
+  x.report('Mutex#synchronize') {
+    lock = Mutex.new
+    n.times do
+      lock.synchronize{
+      }
+    end
+  }
+  x.report('ConditionVariable#signal') {
+    cond = ConditionVariable.new
+    n.times do
+      cond.signal
+    end
+  }
+  x.report('ConditionVariable#broadcast') {
+    cond = ConditionVariable.new
+    n.times do
+      cond.broadcast
+    end
+  }
+  x.report('ConditionVariable#wait') {
+    lock = Mutex.new
+    state = :push
+    cond_push = ConditionVariable.new
+    cond_back = ConditionVariable.new
+
+    th_push = Thread.new{
+      lock.synchronize{
+        (n / 2).times do
+          while (state != :push)
+            cond_push.wait(lock)
+          end
+          cond_back.signal
+          state = :back
+        end
+      }
+    }
+
+    th_back = Thread.new{
+      lock.synchronize{
+        (n / 2).times do
+          while (state != :back)
+            cond_back.wait(lock)
+          end
+          cond_push.signal
+          state = :push
+        end
+      }
+    }
+
+    th_push.join
+    th_back.join
+  }
+  x.report('Queue') {
+    q = Queue.new
+    th_product = Thread.new{
+      n.times do
+        q.push(:foo)
+      end
+    }
+
+    n.times do
+      q.pop
+    end
+
+    th_product.kill
+  }
+  x.report('SizedQueue.new') {
+    q = SizedQueue.new(10)
+    th_product = Thread.new{
+      n.times do
+        q.push(:foo)
+      end
+    }
+
+    n.times do
+      q.pop
+    end
+
+    th_product.kill
   }
 end
 
