@@ -4,6 +4,7 @@
 require 'benchmark'
 require 'monitor'
 require 'thread'
+require 'yaml'
 
 n = ARGV.shift || '1_000_000'
 n = n.to_i
@@ -524,6 +525,78 @@ Benchmark.bm(30) do |x|
     s = Marshal.dump({})
     n.times do
       Marshal.load(s)
+    end
+  }
+  x.report('YAML.dump(:foo)') {
+    obj = :foo
+    n.times do
+      YAML.dump(obj)
+    end
+  }
+  x.report('YAML.load => :foo') {
+    s = YAML.dump(:foo)
+    n.times do
+      YAML.load(s)
+    end
+  }
+  x.report('YAML.dump("a")') {
+    obj = "a"
+    n.times do
+      YAML.dump(obj)
+    end
+  }
+  x.report('YAML.load => "a"') {
+    s = YAML.dump("a")
+    n.times do
+      YAML.load(s)
+    end
+  }
+  x.report('YAML.dump(1)') {
+    obj = 1
+    n.times do
+      YAML.dump(obj)
+    end
+  }
+  x.report('YAML.load => 1') {
+    s = YAML.dump(1)
+    n.times do
+      YAML.load(s)
+    end
+  }
+  x.report('YAML.dump(Object)') {
+    obj = Object.new
+    n.times do
+      YAML.dump(obj)
+    end
+  }
+  x.report('YAML.load => Object') {
+    s = YAML.dump(Object.new)
+    n.times do
+      YAML.load(s)
+    end
+  }
+  x.report('YAML.dump([])') {
+    obj = []
+    n.times do
+      YAML.dump(obj)
+    end
+  }
+  x.report('YAML.load => []') {
+    s = YAML.dump([])
+    n.times do
+      YAML.load(s)
+    end
+  }
+  x.report('YAML.dump({})') {
+    obj = {}
+    n.times do
+      YAML.dump(obj)
+    end
+  }
+  x.report('YAML.load => {}') {
+    s = YAML.dump({})
+    n.times do
+      YAML.load(s)
     end
   }
   x.report('Process.fork&wait (1/1000)') {
