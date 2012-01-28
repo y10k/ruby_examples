@@ -676,7 +676,7 @@ Benchmark.bm(30) do |x|
       YAML.load(s)
     end
   }
-  x.report('Process.fork&wait (1/1000)') {
+  x.report('[1/1000] Process.fork&wait') {
     (n / 1000).times do
       Process.fork{
         exit!
@@ -684,7 +684,7 @@ Benchmark.bm(30) do |x|
       Process.wait
     end
   }
-  x.report('Thread.new&join (1/100)') {
+  x.report('[1/100] Thread.new&join') {
     (n / 100).times do
       Thread.new{
       }.join
