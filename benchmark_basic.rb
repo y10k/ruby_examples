@@ -35,6 +35,22 @@ def method_block
   yield
 end
 
+Struct_member1 = Struct.new(:a)
+
+class Object_attr_accessor
+  attr_accessor :a
+end
+
+class Object_def_accessor
+  def a
+    @a
+  end
+
+  def a=(v)
+    @a = v
+  end
+end
+
 Benchmark.bm(30) do |x|
   x.report('empty') {
     n.times do
@@ -227,6 +243,28 @@ Benchmark.bm(30) do |x|
       code.call(1,2,3)
     end
   }
+  x.report('a') {
+    a = nil
+    n.times do
+      a
+    end
+  }
+  x.report('a = nil') {
+    n.times do
+      a = nil
+    end
+  }
+  x.report('@a') {
+    @a = nil
+    n.times do
+      @a
+    end
+  }
+  x.report('@a = nil') {
+    n.times do
+      @a = nil
+    end
+  }
   x.report('ary[0]') {
     ary = [ nil ]
     n.times do
@@ -249,6 +287,45 @@ Benchmark.bm(30) do |x|
     hash = { :foo => nil }
     n.times do
       hash[:foo] = nil
+    end
+  }
+  x.report('struct_member.a') {
+    s = Struct_member1.new
+    s.a = nil
+    n.times do
+      s.a
+    end
+  }
+  x.report('struct_member.a = nil') {
+    s = Struct_member1.new
+    n.times do
+      s.a = nil
+    end
+  }
+  x.report('object_attr_accessor.a') {
+    o = Object_attr_accessor.new
+    o.a = nil
+    n.times do
+      o.a
+    end
+  }
+  x.report('object_attr_accessor.a = nil') {
+    o = Object_attr_accessor.new
+    n.times do
+      o.a = nil
+    end
+  }
+  x.report('object_def_accessor.a') {
+    o = Object_def_accessor.new
+    o.a = nil
+    n.times do
+      o.a
+    end
+  }
+  x.report('object_def_accessor.a = nil') {
+    o = Object_def_accessor.new
+    n.times do
+      o.a = nil
     end
   }
   x.report('"a".succ') {
