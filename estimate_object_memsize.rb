@@ -88,6 +88,12 @@ num_obj = ARGV.shift || '1_000_000'
 num_obj = num_obj.to_i
 
 [ 
+  '1 << 0',
+  '1 << 32',
+  '1 << 64',
+  'Float(1)',
+  'Complex(1)',
+  'Rational(1)',
   '"" << ""',
   '"" << "1"',
   '"" << "12"',
