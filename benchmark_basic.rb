@@ -604,75 +604,75 @@ Benchmark.bm(30) do |x|
       Marshal.load(s)
     end
   }
-  x.report('YAML.dump(:foo)') {
+  x.report('[1/10] YAML.dump(:foo)') {
     obj = :foo
-    n.times do
+    (n / 10).times do
       YAML.dump(obj)
     end
   }
-  x.report('YAML.load => :foo') {
+  x.report('[1/10] YAML.load => :foo') {
     s = YAML.dump(:foo)
-    n.times do
+    (n / 10).times do
       YAML.load(s)
     end
   }
-  x.report('YAML.dump("a")') {
+  x.report('[1/10] YAML.dump("a")') {
     obj = "a"
-    n.times do
+    (n / 10).times do
       YAML.dump(obj)
     end
   }
-  x.report('YAML.load => "a"') {
+  x.report('[1/10] YAML.load => "a"') {
     s = YAML.dump("a")
-    n.times do
+    (n / 10).times do
       YAML.load(s)
     end
   }
-  x.report('YAML.dump(1)') {
+  x.report('[1/10] YAML.dump(1)') {
     obj = 1
-    n.times do
+    (n / 10).times do
       YAML.dump(obj)
     end
   }
-  x.report('YAML.load => 1') {
+  x.report('[1/10] YAML.load => 1') {
     s = YAML.dump(1)
-    n.times do
+    (n / 10).times do
       YAML.load(s)
     end
   }
-  x.report('YAML.dump(Object)') {
+  x.report('[1/10] YAML.dump(Object)') {
     obj = Object.new
-    n.times do
+    (n / 10).times do
       YAML.dump(obj)
     end
   }
-  x.report('YAML.load => Object') {
+  x.report('[1/10] YAML.load => Object') {
     s = YAML.dump(Object.new)
-    n.times do
+    (n / 10).times do
       YAML.load(s)
     end
   }
-  x.report('YAML.dump([])') {
+  x.report('[1/10] YAML.dump([])') {
     obj = []
-    n.times do
+    (n / 10).times do
       YAML.dump(obj)
     end
   }
-  x.report('YAML.load => []') {
+  x.report('[1/10] YAML.load => []') {
     s = YAML.dump([])
-    n.times do
+    (n / 10).times do
       YAML.load(s)
     end
   }
-  x.report('YAML.dump({})') {
+  x.report('[1/10] YAML.dump({})') {
     obj = {}
-    n.times do
+    (n / 10).times do
       YAML.dump(obj)
     end
   }
-  x.report('YAML.load => {}') {
+  x.report('[1/10] YAML.load => {}') {
     s = YAML.dump({})
-    n.times do
+    (n / 10).times do
       YAML.load(s)
     end
   }
