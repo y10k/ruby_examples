@@ -1,6 +1,8 @@
 #!/usr/local/bin/ruby
 # -*- coding: utf-8 -*-
 
+require 'date'
+
 def get_process_rsz(pid)
   IO.popen([ 'ps', '-p', pid.to_s, '-o', 'rsz' ]) {|p_in|
     p_in.gets
@@ -131,6 +133,12 @@ num_obj = num_obj.to_i
   'Struct_member3.new',
   'Struct_member4.new',
   'Struct_member5.new',
+  'Range.new(1, 2)',
+  'Regexp.new("")',
+  'Mutex.new',
+  'Time.new',
+  'Date.new',
+  'DateTime.new'
 ].each do |expr, factory|
   unless (factory) then
     factory = eval("proc{ #{expr} }")
