@@ -378,6 +378,31 @@ Benchmark.bm(30) do |x|
       1 / 1
     end
   }
+  x.report('Bignum#succ') {
+    n.times do
+      0xFFFF_FFFF_FFFF_FFFF.succ
+    end
+  }
+  x.report('Bignum + 1') {
+    n.times do
+      0xFFFF_FFFF_FFFF_FFFF + 1
+    end
+  }
+  x.report('Bignum - 1') {
+    n.times do
+      0xFFFF_FFFF_FFFF_FFFF - 1
+    end
+  }
+  x.report('Bignum * 1') {
+    n.times do
+      0xFFFF_FFFF_FFFF_FFFF * 1
+    end
+  }
+  x.report('Bignum / 1') {
+    n.times do
+      0xFFFF_FFFF_FFFF_FFFF / 1
+    end
+  }
   x.report('1.0 + 1.0') {
     n.times do
       1.0 + 1.0
