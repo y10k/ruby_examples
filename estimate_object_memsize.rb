@@ -80,11 +80,81 @@ class Object_ivar5
   end
 end
 
+class Object_ivar6
+  def initialize
+    @v1 = nil
+    @v2 = nil
+    @v3 = nil
+    @v4 = nil
+    @v5 = nil
+    @v6 = nil
+  end
+end
+
+class Object_ivar7
+  def initialize
+    @v1 = nil
+    @v2 = nil
+    @v3 = nil
+    @v4 = nil
+    @v5 = nil
+    @v6 = nil
+    @v7 = nil
+  end
+end
+
+class Object_ivar8
+  def initialize
+    @v1 = nil
+    @v2 = nil
+    @v3 = nil
+    @v4 = nil
+    @v5 = nil
+    @v6 = nil
+    @v7 = nil
+    @v8 = nil
+  end
+end
+
+class Object_ivar9
+  def initialize
+    @v1 = nil
+    @v2 = nil
+    @v3 = nil
+    @v4 = nil
+    @v5 = nil
+    @v6 = nil
+    @v7 = nil
+    @v8 = nil
+    @v9 = nil
+  end
+end
+
+class Object_ivar10
+  def initialize
+    @v1 = nil
+    @v2 = nil
+    @v3 = nil
+    @v4 = nil
+    @v5 = nil
+    @v6 = nil
+    @v7 = nil
+    @v8 = nil
+    @v9 = nil
+    @v10 = nil
+  end
+end
+
 Struct_member1 = Struct.new(:v1)
 Struct_member2 = Struct.new(:v1, :v2)
 Struct_member3 = Struct.new(:v1, :v2, :v3)
 Struct_member4 = Struct.new(:v1, :v2, :v3, :v4)
 Struct_member5 = Struct.new(:v1, :v2, :v3, :v4, :v5)
+Struct_member6 = Struct.new(:v1, :v2, :v3, :v4, :v5, :v6)
+Struct_member7 = Struct.new(:v1, :v2, :v3, :v4, :v5, :v6, :v7)
+Struct_member8 = Struct.new(:v1, :v2, :v3, :v4, :v5, :v6, :v7, :v8)
+Struct_member9 = Struct.new(:v1, :v2, :v3, :v4, :v5, :v6, :v7, :v8, :v9)
+Struct_member10 = Struct.new(:v1, :v2, :v3, :v4, :v5, :v6, :v7, :v8, :v9, :v10)
 
 num_obj = ARGV.shift || '1_000_000'
 num_obj = num_obj.to_i
@@ -116,23 +186,43 @@ num_obj = num_obj.to_i
   '[nil,nil,nil]',
   '[nil,nil,nil,nil]',
   '[nil,nil,nil,nil,nil]',
+  '[nil,nil,nil,nil,nil,nil]',
+  '[nil,nil,nil,nil,nil,nil,nil]',
+  '[nil,nil,nil,nil,nil,nil,nil,nil]',
+  '[nil,nil,nil,nil,nil,nil,nil,nil,nil]',
+  '[nil,nil,nil,nil,nil,nil,nil,nil,nil,nil]',
   '{}',
   '{1=>nil}',
   '{1=>nil,2=>nil}',
   '{1=>nil,2=>nil,3=>nil}',
   '{1=>nil,2=>nil,3=>nil,4=>nil}',
   '{1=>nil,2=>nil,3=>nil,4=>nil,5=>nil}',
+  '{1=>nil,2=>nil,3=>nil,4=>nil,5=>nil,6=>nil}',
+  '{1=>nil,2=>nil,3=>nil,4=>nil,5=>nil,6=>nil,7=>nil}',
+  '{1=>nil,2=>nil,3=>nil,4=>nil,5=>nil,6=>nil,7=>nil,8=>nil}',
+  '{1=>nil,2=>nil,3=>nil,4=>nil,5=>nil,6=>nil,7=>nil,8=>nil,9=>nil}',
+  '{1=>nil,2=>nil,3=>nil,4=>nil,5=>nil,6=>nil,7=>nil,8=>nil,9=>nil,10=>nil}',
   'Object.new',
   'Object_ivar1.new',
   'Object_ivar2.new',
   'Object_ivar3.new',
   'Object_ivar4.new',
   'Object_ivar5.new',
+  'Object_ivar6.new',
+  'Object_ivar7.new',
+  'Object_ivar8.new',
+  'Object_ivar9.new',
+  'Object_ivar10.new',
   'Struct_member1.new',
   'Struct_member2.new',
   'Struct_member3.new',
   'Struct_member4.new',
   'Struct_member5.new',
+  'Struct_member6.new',
+  'Struct_member7.new',
+  'Struct_member8.new',
+  'Struct_member9.new',
+  'Struct_member10.new',
   'Range.new(1, 2)',
   'Regexp.new("")',
   'Mutex.new',
