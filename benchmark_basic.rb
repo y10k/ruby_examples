@@ -177,6 +177,22 @@ Benchmark.bm(30) do |x|
       method_no_args
     end
   }
+  x.report('send :method_no_args') {
+    n.times do
+      send(:method_no_args)
+    end
+  }
+  x.report('send "method_no_args"') {
+    n.times do
+      send("method_no_args")
+    end
+  }
+  x.report('method object :method_no_args') {
+    m = method(:method_no_args)
+    n.times do
+      m.call
+    end
+  }
   x.report('method_default') {
     n.times do
       method_default
@@ -243,6 +259,21 @@ Benchmark.bm(30) do |x|
       code.call(1,2,3)
     end
   }
+  x.report('Object::RUBY_VERSION') {
+    n.times do
+      Object::RUBY_VERSION
+    end
+  }
+  x.report('Object.const_get :RUBY_VERSION') {
+    n.times do
+      Object.const_get(:RUBY_VERSION)
+    end
+  }
+  x.report('Object.const_get "RUBY_VERSION"') {
+    n.times do
+      Object.const_get("RUBY_VERSION")
+    end
+  }
   x.report('a') {
     a = nil
     n.times do
@@ -260,9 +291,42 @@ Benchmark.bm(30) do |x|
       @a
     end
   }
+  x.report('instance_variable_get :@a') {
+    @a = nil
+    n.times do
+      instance_variable_get(:@a)
+    end
+  }
+  x.report('instance_variable_get "@a"') {
+    @a = nil
+    n.times do
+      instance_variable_get("@a")
+    end
+  }
   x.report('@a = nil') {
     n.times do
       @a = nil
+    end
+  }
+  x.report('instance_variable_set :@a') {
+    n.times do
+      instance_variable_set(:@a, nil)
+    end
+  }
+  x.report('instance_variable_set "@a"') {
+    n.times do
+      instance_variable_set("@a", nil)
+    end
+  }
+  x.report('$a') {
+    $a = nil
+    n.times do
+      $a
+    end
+  }
+  x.report('$a = nil') {
+    n.times do
+      $a = nil
     end
   }
   x.report('ary[0]') {
