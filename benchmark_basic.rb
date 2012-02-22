@@ -6,9 +6,15 @@ require 'monitor'
 require 'thread'
 require 'yaml'
 
+class Integer
+  def to_comma
+    to_s.reverse.scan(/\d\d?\d?/).join(',').reverse
+  end
+end
+
 n = ARGV.shift || '1_000_000'
 n = n.to_i
-puts "#{n.to_s.reverse.scan(/\d\d?\d?/).join(',').reverse} times."
+puts "#{n.to_comma} times."
 
 def method_no_args
 end
@@ -866,6 +872,38 @@ Benchmark.bm(30) do |x|
       }
     end
   }
+  [ 512, 1024, 8192, 16384, 32768 ].each do |sz|
+    x.report("IO#read #{sz.to_comma} bytes") {
+      File.open('/dev/zero', 'rb:ascii-8bit') {|re|
+        n.times do
+          re.read(sz)
+        end
+      }
+    }
+    x.report("IO#write #{sz.to_comma} bytes") {
+      File.open('/dev/null', 'wb:ascii-8bit') {|wr|
+        s = ' ' * sz
+        n.times do
+          wr.write(s)
+        end
+      }
+    }
+    x.report("IO#sysread #{sz.to_comma} bytes") {
+      File.open('/dev/zero', 'rb:ascii-8bit') {|re|
+        n.times do
+          re.sysread(sz)
+        end
+      }
+    }
+    x.report("IO#syswrite #{sz.to_comma} bytes") {
+      File.open('/dev/null', 'wb:ascii-8bit') {|wr|
+        s = ' ' * sz
+        n.times do
+          wr.syswrite(s)
+        end
+      }
+    }
+  end
 end
 
 # Local Variables:
