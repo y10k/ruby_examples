@@ -9,9 +9,13 @@ class Integer
   end
 end
 
-n = 100
-blksiz = 1028 * 8
+n = Integer(ARGV.shift || 100)
+blksiz = Integer(ARGV.shift || 1028 * 8)
 blkdat = "x" * blksiz
+
+puts "#{n.to_comma} times."
+puts "block size: #{blksiz.to_comma} bytes"
+puts "total data size: #{(blksiz * n).to_comma} bytes"
 
 def open_test_file
   File.open('io_test.dat', 'wb:ascii-8bit') {|output|
