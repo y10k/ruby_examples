@@ -74,7 +74,8 @@ Benchmark.bm(30) do |x|
   }
 
   open_test_file{|f|
-    f.truncate(blksiz * n)
+    f.write(blksiz * n)
+    f.rewind
     f.fsync
 
     x.report('[fixed file size] fsync') {
@@ -86,7 +87,8 @@ Benchmark.bm(30) do |x|
   }
 
   open_test_file{|f|
-    f.truncate(blksiz * n)
+    f.write(blksiz * n)
+    f.rewind
     f.fsync
 
     x.report('[fixed file size] fdatasync') {
