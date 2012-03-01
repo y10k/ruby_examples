@@ -17,8 +17,12 @@ puts "#{n.to_comma} times."
 puts "block size: #{blksiz.to_comma} bytes"
 puts "total data size: #{(blksiz * n).to_comma} bytes"
 
-def open_test_file
-  File.open('io_test.dat', 'wb:ascii-8bit') {|output|
+def open_test_file(flags=nil)
+  mode = File::WRONLY | File::CREAT | File::TRUNC
+  mode |= flags if flags
+  File.open('io_test.dat', mode) {|output|
+    output.binmode
+    output.set_encoding(Encoding::ASCII_8BIT)
     yield(output)
   }
 end
@@ -73,6 +77,22 @@ Benchmark.bm(30) do |x|
     }
   }
 
+  open_test_file(File::SYNC) {|f|
+    x.report('open SYNC') {
+      n.times do
+        f.write(blkdat)
+      end
+    }
+  }
+
+  open_test_file(File::DSYNC) {|f|
+    x.report('open DSYNC') {
+      n.times do
+        f.write(blkdat)
+      end
+    }
+  }
+
   open_test_file{|f|
     f.write(blksiz * n)
     f.rewind
@@ -95,6 +115,30 @@ Benchmark.bm(30) do |x|
       n.times do
         f.write(blkdat)
         f.fdatasync
+      end
+    }
+  }
+
+  open_test_file(File::SYNC) {|f|
+    f.write(blksiz * n)
+    f.rewind
+    f.fsync
+
+    x.report('[fixed file size] open SYNC') {
+      n.times do
+        f.write(blkdat)
+      end
+    }
+  }
+
+  open_test_file(File::DSYNC) {|f|
+    f.write(blksiz * n)
+    f.rewind
+    f.fsync
+
+    x.report('[fixed file size] open DSYNC') {
+      n.times do
+        f.write(blkdat)
       end
     }
   }
