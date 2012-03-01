@@ -36,7 +36,7 @@ Benchmark.bm(30) do |x|
   open_test_file{|f|
     x.report('no sync') {
       n.times do
-        f.write(blkdat)
+        f.syswrite(blkdat)
       end
     }
   }
@@ -44,7 +44,7 @@ Benchmark.bm(30) do |x|
   open_test_file{|f|
     x.report('fsync once') {
       n.times do
-        f.write(blkdat)
+        f.syswrite(blkdat)
       end
       f.fsync
     }
@@ -53,7 +53,7 @@ Benchmark.bm(30) do |x|
   open_test_file{|f|
     x.report('fdatasync once') {
       n.times do
-        f.write(blkdat)
+        f.syswrite(blkdat)
       end
       f.fdatasync
     }
@@ -62,7 +62,7 @@ Benchmark.bm(30) do |x|
   open_test_file{|f|
     x.report('fsync') {
       n.times do
-        f.write(blkdat)
+        f.syswrite(blkdat)
         f.fsync
       end
     }
@@ -71,7 +71,7 @@ Benchmark.bm(30) do |x|
   open_test_file{|f|
     x.report('fdatasync') {
       n.times do
-        f.write(blkdat)
+        f.syswrite(blkdat)
         f.fdatasync
       end
     }
@@ -80,7 +80,7 @@ Benchmark.bm(30) do |x|
   open_test_file(File::SYNC) {|f|
     x.report('open SYNC') {
       n.times do
-        f.write(blkdat)
+        f.syswrite(blkdat)
       end
     }
   }
@@ -88,7 +88,7 @@ Benchmark.bm(30) do |x|
   open_test_file(File::DSYNC) {|f|
     x.report('open DSYNC') {
       n.times do
-        f.write(blkdat)
+        f.syswrite(blkdat)
       end
     }
   }
@@ -100,7 +100,7 @@ Benchmark.bm(30) do |x|
 
     x.report('[fixed file size] fsync') {
       n.times do
-        f.write(blkdat)
+        f.syswrite(blkdat)
         f.fsync
       end
     }
@@ -113,7 +113,7 @@ Benchmark.bm(30) do |x|
 
     x.report('[fixed file size] fdatasync') {
       n.times do
-        f.write(blkdat)
+        f.syswrite(blkdat)
         f.fdatasync
       end
     }
@@ -126,7 +126,7 @@ Benchmark.bm(30) do |x|
 
     x.report('[fixed file size] open SYNC') {
       n.times do
-        f.write(blkdat)
+        f.syswrite(blkdat)
       end
     }
   }
@@ -138,7 +138,7 @@ Benchmark.bm(30) do |x|
 
     x.report('[fixed file size] open DSYNC') {
       n.times do
-        f.write(blkdat)
+        f.syswrite(blkdat)
       end
     }
   }
