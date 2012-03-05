@@ -147,10 +147,35 @@ Benchmark.bm(30) do |x|
       end
     end
   }
+  x.report('rescue') {
+    n.times do
+      begin
+      rescue
+      end
+    end
+  }
   x.report('ensure') {
     n.times do
       begin
       ensure
+      end
+    end
+  }
+  x.report('empty method rescue') {
+    n.times do
+      begin
+        method_no_args
+      rescue
+        method_no_args
+      end
+    end
+  }
+  x.report('empty method ensure') {
+    n.times do
+      begin
+        method_no_args
+      ensure
+        method_no_args
       end
     end
   }
