@@ -10,7 +10,7 @@ class Integer
 end
 
 n = Integer(ARGV.shift || 100)
-blksiz = Integer(ARGV.shift || 1028 * 8)
+blksiz = Integer(ARGV.shift || 1024 * 4)
 blkdat = "x" * blksiz
 
 puts "#{n.to_comma} times."
