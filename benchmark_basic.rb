@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 require 'benchmark'
+require 'drb/drb'
+require 'drb/unix'
 require 'monitor'
 require 'thread'
 require 'yaml'
@@ -14,7 +16,6 @@ end
 
 n = ARGV.shift || '1_000_000'
 n = n.to_i
-puts "#{n.to_comma} times."
 
 def method_no_args
 end
@@ -57,7 +58,59 @@ class Object_def_accessor
   end
 end
 
-Benchmark.bm(30) do |x|
+class RemoteObject
+  def method_no_args
+  end
+
+  def method_default(a=:foo)
+  end
+
+  def method_a1(a)
+  end
+
+  def method_a2(a, b)
+  end
+
+  def method_a3(a, b, c)
+  end
+
+  def method_args(*args)
+  end
+
+  def method_keywords(options={})
+  end
+
+  def method_block
+    yield
+  end
+end
+
+druby_remote_uri = 'drbunix:' + File.expand_path(File.join(File.dirname($0), "druby_remote.#{$$}"))
+druby_local_uri = 'drbunix:' + File.expand_path(File.join(File.dirname($0), "druby_local.#{$$}"))
+
+pid = fork{
+  DRb.start_service(druby_remote_uri, RemoteObject.new)
+  DRb.thread.join
+}
+
+at_exit{
+  Process.kill('TERM', pid)
+}
+
+DRb.start_service(druby_local_uri)
+drb_remote_obj = DRbObject.new_with_uri(druby_remote_uri)
+
+# wait to start remote server
+begin
+  drb_remote_obj.method_no_args
+rescue DRb::DRbConnError
+  sleep(0.1)
+  retry
+end
+
+puts "#{n.to_comma} times."
+
+Benchmark.bm(45) do |x|
   x.report('empty') {
     n.times do
     end
@@ -894,6 +947,48 @@ Benchmark.bm(30) do |x|
     mon = Monitor.new
     n.times do
       mon.synchronize{
+      }
+    end
+  }
+  x.report('[1/100] drb_remote_obj.method_no_args') {
+    (n / 100).times do
+      drb_remote_obj.method_no_args
+    end
+  }
+  x.report('[1/100] drb_remote_obj.method_a1') {
+    (n / 100).times do
+      drb_remote_obj.method_a1(1)
+    end
+  }
+  x.report('[1/100] drb_remote_obj.method_a2') {
+    (n / 100).times do
+      drb_remote_obj.method_a2(1, 2)
+    end
+  }
+  x.report('[1/100] drb_remote_obj.method_a3') {
+    (n / 100).times do
+      drb_remote_obj.method_a3(1, 2, 3)
+    end
+  }
+  x.report('[1/100] drb_remote_obj.method_args') {
+    (n / 100).times do
+      drb_remote_obj.method_args(1, 2, 3)
+    end
+  }
+  x.report('[1/100] drb_remote_obj.method_keywords') {
+    (n / 100).times do
+      drb_remote_obj.method_keywords(foo: 1, bar: 2, baz: 3)
+    end
+  }
+  x.report('[1/100] drb_remote_obj.method_block do end') {
+    (n / 100).times do
+      drb_remote_obj.method_block do
+      end
+    end
+  }
+  x.report('[1/100] drb_remote_obj.method_block{}') {
+    (n / 100).times do
+      drb_remote_obj.method_block{
       }
     end
   }
