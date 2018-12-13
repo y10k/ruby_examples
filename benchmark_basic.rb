@@ -5,6 +5,7 @@ require 'benchmark'
 require 'drb/drb'
 require 'drb/unix'
 require 'monitor'
+require 'securerandom'
 require 'thread'
 require 'yaml'
 
@@ -107,6 +108,8 @@ rescue DRb::DRbConnError
   sleep(0.1)
   retry
 end
+
+random = Random.new
 
 puts "#{n.to_comma} times."
 
@@ -992,6 +995,33 @@ Benchmark.bm(45) do |x|
       }
     end
   }
+  x.report('rand') {
+    n.times do
+      rand
+    end
+  }
+  x.report('Random#rand') {
+    n.times do
+      random.rand
+    end
+  }
+  x.report('SecureRandom.random_number') {
+    n.times do
+      SecureRandom.random_number
+    end
+  }
+  [ 16, 32, 64, 128, 256, 512, 1024 ].each do |size|
+    x.report("Random#bytes(#{size})") {
+      n.times do
+        random.bytes(size)
+      end
+    }
+    x.report("SecureRandom.random_bytes(#{size})") {
+      n.times do
+        SecureRandom.random_bytes(size)
+      end
+    }
+  end
   [ 512, 1024, 8192, 16384, 32768 ].each do |sz|
     x.report("IO#read #{sz.to_comma} bytes") {
       File.open('/dev/zero', 'rb:ascii-8bit') {|re|
