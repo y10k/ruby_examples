@@ -958,6 +958,11 @@ Benchmark.bm(45) do |x|
       drb_remote_obj.method_no_args
     end
   }
+  x.report('[1/100] drb_remote_obj.method_default') {
+    (n / 100).times do
+      drb_remote_obj.method_default
+    end
+  }
   x.report('[1/100] drb_remote_obj.method_a1') {
     (n / 100).times do
       drb_remote_obj.method_a1(1)
