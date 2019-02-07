@@ -73,6 +73,53 @@ end
 puts Benchmark::CAPTION
 puts t.inject{|s, i| s + i }
 
+puts
+puts 'IO#wait_readable, TCPServer#accept_nonblock'
+
+t = []
+repeat_num.times do
+  c = []
+  chunk_num.times do
+    c << TCPSocket.new('localhost', s_port)
+  end
+
+  a = []
+  t << Benchmark.measure{
+    chunk_num.times do
+      begin
+        is_readable = s.wait_readable(0.001)
+      end until (is_readable) 
+      a << s.accept_nonblock
+    end
+  }
+
+  for i in a + c
+    i.close
+  end
+end
+
+puts Benchmark::CAPTION
+puts t.inject{|s, i| s + i }
+
+puts
+puts 'TCPServer#accept_nonblock fail rescue'
+
+t = []
+repeat_num.times do
+  t << Benchmark.measure{
+    chunk_num.times do
+      begin
+        s.accept_nonblock
+      rescue IO::WaitReadable
+        # nothing to do.
+      end
+    end
+  }
+end
+
+puts Benchmark::CAPTION
+puts t.inject{|s, i| s + i }
+
 # Local Variables:
 # mode: Ruby
 # indent-tabs-mode: nil
